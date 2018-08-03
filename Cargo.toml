@@ -8,6 +8,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 wasm-bindgen = "0.2.13"
+console_error_panic_hook = "0.1.3"
 
 [profile.release]
 # Include function names in the `.wasm` for better debugging and

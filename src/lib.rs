@@ -4,6 +4,19 @@ extern crate wasm_bindgen;
 
 use wasm_bindgen::prelude::*;
 
+extern crate console_error_panic_hook;
+
+#[wasm_bindgen]
+extern {
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(msg: &str);
+}
+
+// A macro to provide `println!(..)`-style syntax for `console.log` logging.
+macro_rules! log {
+    ($($t:tt)*) => (log(&format!($($t)*)))
+}
+
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Cell {
@@ -70,6 +83,8 @@ impl Universe {
         let width = 64;
         let height = 64;
 
+        console_error_panic_hook::set_once();
+
         let cells = (0..width * height)
             .map(|i| {
                 if i % 2 == 0 || i % 7 == 0 {
@@ -98,7 +113,13 @@ impl Universe {
                 let idx = self.get_index(row, col);
                 let cell = self.cells[idx];
                 let live_neighbors = self.live_neighbor_count(row, col);
-
+                log!(
+                    "cell[{}, {}] is initially {:?} and has {} live neighbors",
+                    row,
+                    col,
+                    cell,
+                    live_neighbors
+                );
                 let next_cell = match (cell, live_neighbors) {
                     // Rule 1: Any live cell with fewer than two live neighbours
                     // dies, as if caused by underpopulation.
@@ -117,6 +138,8 @@ impl Universe {
                 };
 
                 next[idx] = next_cell;
+
+                log!("    it becomes {:?}", next_cell);
             }
         }
 
