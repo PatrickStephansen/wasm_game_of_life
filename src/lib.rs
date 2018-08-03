@@ -122,13 +122,7 @@ impl Universe {
                 let idx = self.get_index(row, col);
                 let cell = self.cells[idx];
                 let live_neighbors = self.live_neighbor_count(row, col);
-                log!(
-                    "cell[{}, {}] is initially {:?} and has {} live neighbors",
-                    row,
-                    col,
-                    cell,
-                    live_neighbors
-                );
+
                 let next_cell = match (cell, live_neighbors) {
                     // Rule 1: Any live cell with fewer than two live neighbours
                     // dies, as if caused by underpopulation.
@@ -147,8 +141,6 @@ impl Universe {
                 };
 
                 next[idx] = next_cell;
-
-                log!("    it becomes {:?}", next_cell);
             }
         }
 

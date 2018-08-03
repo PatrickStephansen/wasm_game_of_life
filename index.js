@@ -1,5 +1,6 @@
 import { Universe } from "./wasm_game_of_life";
 import { memory } from "./wasm_game_of_life_bg";
+import { FPS } from "./fps-class";
 
 const CELL_SIZE = 5; // px
 const GRID_COLOR = "#CCCCCC";
@@ -23,6 +24,7 @@ canvas.width = (CELL_SIZE + 1) * width + 1;
 
 const ctx = canvas.getContext("2d");
 let animationId = null;
+const fps = new FPS();
 
 const isPaused = () => {
   return animationId === null;
@@ -50,22 +52,22 @@ playPauseButton.addEventListener("click", event => {
 });
 
 canvas.addEventListener("click", event => {
-    const boundingRect = canvas.getBoundingClientRect();
-  
-    const scaleX = canvas.width / boundingRect.width;
-    const scaleY = canvas.height / boundingRect.height;
-  
-    const canvasLeft = (event.clientX - boundingRect.left) * scaleX;
-    const canvasTop = (event.clientY - boundingRect.top) * scaleY;
-  
-    const row = Math.min(Math.floor(canvasTop / (CELL_SIZE + 1)), height - 1);
-    const col = Math.min(Math.floor(canvasLeft / (CELL_SIZE + 1)), width - 1);
-  
-    universe.toggle_cell(row, col);
-  
-    drawCells();
-    drawGrid();
-  });
+  const boundingRect = canvas.getBoundingClientRect();
+
+  const scaleX = canvas.width / boundingRect.width;
+  const scaleY = canvas.height / boundingRect.height;
+
+  const canvasLeft = (event.clientX - boundingRect.left) * scaleX;
+  const canvasTop = (event.clientY - boundingRect.top) * scaleY;
+
+  const row = Math.min(Math.floor(canvasTop / (CELL_SIZE + 1)), height - 1);
+  const col = Math.min(Math.floor(canvasLeft / (CELL_SIZE + 1)), width - 1);
+
+  universe.toggle_cell(row, col);
+
+  drawCells();
+  drawGrid();
+});
 
 const getIndex = (row, column) => {
   return row * width + column;
@@ -116,6 +118,8 @@ const drawGrid = () => {
 };
 
 const renderLoop = () => {
+  fps.render();
+
   universe.tick();
 
   drawGrid();
