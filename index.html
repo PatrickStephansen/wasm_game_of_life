@@ -2,27 +2,30 @@
 <html>
 
 <head>
-    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
 
-    <style>
-        body {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    </style>
+  <style>
+    body,
+    html {
+      height: 100%;
+      display: grid;
+    }
+
+    #game-of-life-canvas {
+      /* thing to center */
+      margin: auto;
+    }
+  </style>
 </head>
 
 <body>
 
-    <body>
-        <pre id="fps"></pre>
-        <button id="play-pause" type="button">⏸</button>
-        <canvas id="game-of-life-canvas"></canvas>
-        <script src='./bootstrap.js'></script>
-    </body>
+  <body>
+    <pre id="fps"></pre>
+    <button id="play-pause" type="button">⏸</button>
+    <canvas id="game-of-life-canvas"></canvas>
+    <script src='./bootstrap.js'></script>
+  </body>
 </body>
 
 </html>
